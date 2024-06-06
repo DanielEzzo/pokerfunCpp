@@ -15,7 +15,9 @@ int** generadeCartSet() {
 
 void showCards(int** set) {
 	int countCards = _msize(set) / sizeof(set[0]);
+
 	for (int i = 0; i < countCards; i++) {
+
 		switch (set[i][0]){
 		case(11):
 			cout << "В" << char(set[i][1]) << " ";
@@ -31,7 +33,6 @@ void showCards(int** set) {
 			break;
 		default:
 			cout << set[i][0] << char(set[i][1]) << " ";
-
 			break;
 		}
 	}

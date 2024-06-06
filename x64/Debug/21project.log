@@ -1,0 +1,5 @@
+﻿  21project.cpp
+C:\Users\Взрослая академия\Documents\Krivchikov\21project\21project.cpp(17,47): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Взрослая академия\Documents\Krivchikov\21project\21project.cpp(42,41): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Взрослая академия\Documents\Krivchikov\21project\21project.cpp(50,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  21project.vcxproj -> C:\Users\Взрослая академия\Documents\Krivchikov\21project\x64\Debug\21project.exe
