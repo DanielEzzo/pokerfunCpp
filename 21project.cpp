@@ -1,6 +1,10 @@
 ﻿#include <iostream>
-#define random(a,b) a+rand()%(b+a-1)
+#define random(a,b) a+rand()%(b+1-a)
 using namespace std;
+
+const string NAMES[] = { "Вася", "Катя", "Ира", "Жора", "Игорь", "Гога" };
+
+const int COUNT_NAMES = 6;
 
 int** generadeCartSet() {
 	int** set = new int*[52];
@@ -45,6 +49,44 @@ void shuffle(int** set) {
 	}
 }
 
+string* creatPlayers(int count) {
+	if (count > 5 || count < 1) {
+		cout << "неправильное кол-во игроков";
+		return nullptr;
+	}
+	else {
+		string* name = new string[count];
+
+		for (int i = 0, flag; i < count; i++) {
+			name[i] = NAMES[random(0, COUNT_NAMES - 1)];
+			flag = false;
+			for (int j = 0; j < i; j++) {
+				if (name[i] == name[j]) {
+					flag = true;
+					break;
+				}
+			}
+			if (flag) i--;
+		}
+
+		return name;
+	}
+}
+
+void showPlayers(string*& names, int count, int*& money) {
+	for (int i = 0; i < count; i++) {
+		cout << endl << names[i] <<"\t" << money[i] << "$";
+	}
+}
+
+int* creatCash(int count, int countMoney) {
+	int* money = new int[count];
+	for (int i = 0; i < count; i++) {
+		money[i] = countMoney;
+	}
+	return money;
+}
+
 int main()
 {
 	srand(time(NULL));
@@ -52,5 +94,9 @@ int main()
 	int**mainSet = generadeCartSet();
 	shuffle(mainSet);
 	showCards(mainSet);
+	int playersCount = 5;
+	string* name = creatPlayers(playersCount);
 
+	int* money = creatCash(5, 1000);
+	showPlayers(name, playersCount, money);
 }
