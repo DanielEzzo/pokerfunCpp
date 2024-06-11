@@ -3,5 +3,5 @@ C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21pr
 C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21project.cpp(51,41): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
 C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21project.cpp(82,54): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
 C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21project.cpp(83,51): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21project.cpp(127,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\21project.cpp(126,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   21project.vcxproj -> C:\Users\Взрослая академия\Documents\Krivchikov\pokerfunCpp\x64\Debug\21project.exe

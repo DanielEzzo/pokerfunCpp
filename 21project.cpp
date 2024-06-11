@@ -9,7 +9,7 @@ using namespace std;
 
 const string NAMES[] = { "Вася", "Катя", "Ира", "Гоша", "Игорь", "Гога" };
 const int COUNT_NAMES = 6;
-
+const int DEFOULT_CASH = 1000;
 int** generadeCartSet() {
 	// 4♣ 4♠ 4♥ 4♦
 	int** set = new int*[52];
@@ -82,19 +82,16 @@ void transferCarts(int**& outSet, int**& inSet) {
 	int countOutSet = _msize(outSet) / sizeof(outSet[0]);
 	int countInSet = _msize(inSet) / sizeof(inSet[0]);
 	int** outSetBuf = new int* [countOutSet - 1];
-	int** inSetBuf = new int* [countOutSet + 1];
-	
+	int** inSetBuf = new int* [countInSet + 1];
 	for (int i = 0; i < countOutSet - 1; i++) {
 		outSetBuf[i] = outSet[i];
 	}
-
 	for (int i = 0; i < countInSet; i++) {
 		inSetBuf[i] = inSet[i];
 	}
-
-	inSetBuf[countInSet] = outSet[countOutSet-1];
-	delete[]inSet;
-	delete[]outSet;
+	inSetBuf[countInSet] = outSet[countOutSet - 1];
+	delete[] inSet;
+	delete[] outSet;
 	inSet = inSetBuf;
 	outSet = outSetBuf;
 
@@ -121,39 +118,49 @@ void showPlayer(string names, int money, int**& playersSet) {
 	cout << "]";
 }
 
+
+
 int main()
 {
-	//while (true) {
-		srand(time(NULL));
-		setlocale(LC_ALL, "");
-		int** mainSet = generadeCartSet();
-		shuffle(mainSet);
-		showCards(mainSet);
-		int playersCount = 6;
-		string* name = creatPlayers(playersCount);
 
-		int*** playersSets = new int** [playersCount];
-		for (int i = 0; i < playersCount; i++) {
-			playersSets[i] = new int* [0];
+	srand(time(NULL));
+	setlocale(LC_ALL, "");
+	int** mainSet = generadeCartSet();
+	shuffle(mainSet);
+	showCards(mainSet);
+	int playersCount = 6;
+	string* name = creatPlayers(playersCount);
+
+	int*** playersSets = new int** [playersCount];
+	for (int i = 0; i < playersCount; i++) {
+		playersSets[i] = new int* [0];
+	}
+
+	for (int i = 0; i < playersCount; i++) {
+		for (int j = 0; j < 2; j++) {
+			transferCarts(mainSet, playersSets[i]);
 		}
+	}
 
-		for (int i = 0; i < playersCount; i++) {
-			for (int j = 0; j < 2; j++) {
-				transferCarts(mainSet, playersSets[i]);
-			}
-		}
+	int* money = creatCash(playersCount, 1000);
 
-		int* money = creatCash(playersCount, 1000);
-		for (int i = 0; i < playersCount; i++) {
-			showCards(playersSets[i]);
-			showPlayers(name, playersCount, money);
 
-		}
+	for (int i = 0; i < playersCount; i++) {
+		cout << endl;
+		showPlayer(name[i], money[i], playersSets[i]);
+	}
 
-		for (int i = 0; i < playersCount; i++) {
-			showPlayer(name[i], money[i], playersSets[i]);
-		}
-		
+	int** tableSet = new int* [0];
+	cout << endl << "стол: ";
+	for (int i = 0; i < 3; i++) {
+		transferCarts(mainSet, tableSet);
+	}
+	showCards(tableSet);
 
-	//}
+	int blind = DEFOULT_CASH/20;
+	int smallBlind = blind / 2;
+	int indexSmallBlind = 0;
+	while (true) {
+
+	}
 }
