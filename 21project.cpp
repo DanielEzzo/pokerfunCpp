@@ -1,12 +1,17 @@
 ﻿#include <iostream>
+
 #define random(a,b) a+rand()%(b+1-a)
+
 using namespace std;
 
-const string NAMES[] = { "Вася", "Катя", "Ира", "Жора", "Игорь", "Гога" };
+//#include "prototypes.h"
+//#include "constance1.h"
 
+const string NAMES[] = { "Вася", "Катя", "Ира", "Гоша", "Игорь", "Гога" };
 const int COUNT_NAMES = 6;
 
 int** generadeCartSet() {
+	// 4♣ 4♠ 4♥ 4♦
 	int** set = new int*[52];
 
 	for (int index=0,value = 2; value < 15; value++) {
@@ -50,17 +55,17 @@ void shuffle(int** set) {
 }
 
 string* creatPlayers(int count) {
-	if (count > 5 || count < 1) {
+	if (count > 6 || count < 1) {
 		cout << "неправильное кол-во игроков";
 		return nullptr;
 	}
 	else {
 		string* name = new string[count];
-
-		for (int i = 0, flag; i < count; i++) {
+		name[0] = "вы";
+		for (int i = 1, flag; i < count; i++) {
 			name[i] = NAMES[random(0, COUNT_NAMES - 1)];
 			flag = false;
-			for (int j = 0; j < i; j++) {
+			for (int j = 1; j < i; j++) {
 				if (name[i] == name[j]) {
 					flag = true;
 					break;
@@ -73,30 +78,82 @@ string* creatPlayers(int count) {
 	}
 }
 
-void showPlayers(string*& names, int count, int*& money) {
-	for (int i = 0; i < count; i++) {
-		cout << endl << names[i] <<"\t" << money[i] << "$";
+void transferCarts(int**& outSet, int**& inSet) {
+	int countOutSet = _msize(outSet) / sizeof(outSet[0]);
+	int countInSet = _msize(inSet) / sizeof(inSet[0]);
+	int** outSetBuf = new int* [countOutSet - 1];
+	int** inSetBuf = new int* [countOutSet + 1];
+	
+	for (int i = 0; i < countOutSet - 1; i++) {
+		outSetBuf[i] = outSet[i];
 	}
+
+	for (int i = 0; i < countInSet; i++) {
+		inSetBuf[i] = inSet[i];
+	}
+
+	inSetBuf[countInSet] = outSet[countOutSet-1];
+	delete[]inSet;
+	delete[]outSet;
+	inSet = inSetBuf;
+	outSet = outSetBuf;
+
 }
 
-int* creatCash(int count, int countMoney) {
-	int* money = new int[count];
-	for (int i = 0; i < count; i++) {
+int* creatCash(int countPlayers, int countMoney) {
+	int* money = new int[countPlayers];
+	for (int i = 0; i < countPlayers; i++) {
 		money[i] = countMoney;
 	}
 	return money;
 }
 
+void showPlayers(string*& names, int count, int*& money) {
+	for (int i = 0; i < count; i++) {
+		cout << endl << names[i] << "\t" << money[i] << "$";
+	}
+
+}
+
+void showPlayer(string names, int money, int**& playersSet) {
+	cout << names << "\t" << money << "$" << " [";
+	showCards(playersSet);
+	cout << "]";
+}
+
 int main()
 {
-	srand(time(NULL));
-	setlocale(LC_ALL, "");
-	int**mainSet = generadeCartSet();
-	shuffle(mainSet);
-	showCards(mainSet);
-	int playersCount = 5;
-	string* name = creatPlayers(playersCount);
+	//while (true) {
+		srand(time(NULL));
+		setlocale(LC_ALL, "");
+		int** mainSet = generadeCartSet();
+		shuffle(mainSet);
+		showCards(mainSet);
+		int playersCount = 6;
+		string* name = creatPlayers(playersCount);
 
-	int* money = creatCash(5, 1000);
-	showPlayers(name, playersCount, money);
+		int*** playersSets = new int** [playersCount];
+		for (int i = 0; i < playersCount; i++) {
+			playersSets[i] = new int* [0];
+		}
+
+		for (int i = 0; i < playersCount; i++) {
+			for (int j = 0; j < 2; j++) {
+				transferCarts(mainSet, playersSets[i]);
+			}
+		}
+
+		int* money = creatCash(playersCount, 1000);
+		for (int i = 0; i < playersCount; i++) {
+			showCards(playersSets[i]);
+			showPlayers(name, playersCount, money);
+
+		}
+
+		for (int i = 0; i < playersCount; i++) {
+			showPlayer(name[i], money[i], playersSets[i]);
+		}
+		
+
+	//}
 }
